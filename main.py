@@ -1,19 +1,13 @@
 import sys
-
 import pygame as pg
 
-from lib.background import Background
-from lib.brick import Brick
-from lib.constants import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, HAND_STARTING_X, \
-    HAND_STARTING_Y, HAND_SPEED_X, HAND_SPEED_Y, BRICK_STARTING_X, \
-    BRICK_STARTING_Y, SPEED_Y
+from lib.constants import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
 from lib.game_manager import GameManager
-from lib.hand import Hand
 from lib.sound import SoundManager
 
 
-def get_all_keydowns():
-    all_keydowns = []
+def get_all_pressed_keys():
+    pressed_keys = []
 
     events = pg.event.get()
     for event in events:
@@ -23,14 +17,15 @@ def get_all_keydowns():
             if event.key == pg.K_ESCAPE:
                 need_to_exit = True
             else:
-                all_keydowns.append(event.key)
+                pressed_keys.append(event.key)
         if event.type == pg.QUIT:
             need_to_exit = True
         if need_to_exit:
             pg.quit()
             sys.exit()
 
-    return all_keydowns
+    return pressed_keys
+
 
 pg.init()
 
@@ -40,9 +35,9 @@ sound_manager = SoundManager()
 game_manager = GameManager(sound_manager=sound_manager)
 
 while True:
-    keydowns = get_all_keydowns()
-    game_manager.update(keydowns)
-    game_manager.draw(screen)
+    keys = get_all_pressed_keys()
+    game_manager.update(pressed_keys=keys)
+    game_manager.draw(surface=screen)
 
     pg.display.update()
     clock.tick(FPS)

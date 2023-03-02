@@ -3,7 +3,7 @@
 import pygame as pg
 
 from lib.constants import DELTA_T, SCREEN_WIDTH, HAND_ACCELERATION, \
-    MAX_HAND_SPEED, SCREEN_HEIGHT
+    MAX_HAND_SPEED, SCREEN_HEIGHT, HAND_FILENAME
 
 
 class Hand:
@@ -11,7 +11,7 @@ class Hand:
         self.position = list(position)
         self.speed = list(speed)
 
-        self.image = pg.image.load("source/images/lego_hand.png")
+        self.image = pg.image.load(HAND_FILENAME)
 
     def move(self):
         self.position[0] += self.speed[0] * DELTA_T
