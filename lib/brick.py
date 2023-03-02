@@ -5,7 +5,8 @@ import pygame as pg
 
 from lib.constants import DELTA_T, G, WHITE_BRICK_FILENAME, \
     BRICK_STOP_HEIGHT, BRICK_HEIGHT, BRICK_WIDTH, HAND_GRIP_POSITION_X, \
-    HAND_GRIP_POSITION_Y
+    HAND_GRIP_POSITION_Y, SCALE
+from lib.utilities import scale_image
 
 
 class Brick:
@@ -17,6 +18,7 @@ class Brick:
         self.sound_manager = sound_manager
 
         self.image = pg.image.load(WHITE_BRICK_FILENAME)
+        self.image = scale_image(self.image, SCALE)
 
     def move(self, hand_position, bricks_count, scroll):
         if self.state == "in_hand":
@@ -79,11 +81,12 @@ class BrickManager:
                     if active_brick.state == "rest" and not \
                             (top_brick_left < active_brick_center <
                              top_brick_right):
-                        pg.quit()
-                        sys.exit()
+                        return "menu"
                 self.new_brick()
                 if len(self.bricks) >= 6:
                     self.camera.camera_up()
+
+        return "game"
 
     def draw_bricks(self, screen, scroll):
         for brick in self.bricks:

@@ -27,8 +27,11 @@ class GameManager:
     def draw(self, surface):
         self.background.draw_game_window(surface, self.camera.current_scroll)
         self.brick_manager.draw_bricks(surface, self.camera.current_scroll)
-        surface.blit(self.hand.image, self.hand.position)
+        self.hand.draw(surface)
 
     def update(self, pressed_keys):
         self.hand.move()
-        self.brick_manager.move(pressed_keys)
+        new_state = self.brick_manager.move(pressed_keys)
+        if new_state == "menu":
+            self.__init__(sound_manager=self.sound_manager)
+        return new_state
